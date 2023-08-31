@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { Swipeable } from 'react-native-gesture-handler';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -18,7 +21,7 @@ export default function App() {
     <NavigationContainer>
     <Stack.Navigator initialRouteName="Page1">
       <Stack.Screen name="NoteBook">
-        {props => <Page1 {...props} notes={notes} />}
+        {props => <Page1 {...props} notes={notes} setNotes={setNotes} />}
       </Stack.Screen>
       <Stack.Screen name="New Note">
         {props => <Page2 {...props} onNoteAdded={addNote} />}
@@ -39,21 +42,34 @@ const Page1 = ({ navigation, notes, setNotes }) => {
     });
   };
 
+  const renderNoteItem = ({ item, index }) => {
+    const shortNote = item.length > 30 ? `${item.slice(0, 30)}...` : item;
+
+    return (
+      <TouchableOpacity onPress={() => handleNoteEdit(index)}>
+        <View>
+          <Text style={styles.note}>{shortNote}</Text>
+          <View style={styles.separator} />
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Button title="New Note" onPress={() => navigation.navigate("New Note")} />
-      <FlatList
-        data={notes}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity onPress={() => handleNoteEdit(index)}>
-            <Text style={styles.note}>{item.slice(0, 30)}...</Text>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      <View style={styles.notebox}>
+        <FlatList
+          data={notes}
+          renderItem={renderNoteItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
     </View>
   );
 };
+
+
 
 const Page2 = ({ navigation, onNoteAdded }) => {
   const [typedMessage, setTypedMessage] = useState("");
@@ -126,7 +142,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   note: {
-    fontSize: 16,
-    marginBottom: 8,
+    fontSize: 20,
+  },
+  notebox:{
+    marginTop: 35,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    marginVertical: 15,
   },
 });
