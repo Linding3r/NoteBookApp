@@ -112,13 +112,13 @@ const EditNote = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <Button title="Update Note" onPress={handleNoteUpdate} />
       <TextInput
         style={styles.input}
         placeholder="Edit your note..."
         value={editedNote}
         onChangeText={text => setEditedNote(text)}
       />
-      <Button title="Update Note" onPress={handleNoteUpdate} />
     </View>
   );
 };
