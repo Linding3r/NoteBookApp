@@ -114,6 +114,8 @@ const EditNote = ({ navigation, route }) => {
     <View style={styles.container}>
       <Button title="Update Note" onPress={handleNoteUpdate} />
       <TextInput
+        multiline
+        numberOfLines={100}
         style={styles.input}
         placeholder="Edit your note..."
         value={editedNote}
