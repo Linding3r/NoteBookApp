@@ -139,7 +139,8 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 8,
-    marginBottom: 8,
+    marginTop: 35,
+    textAlignVertical: 'top',
   },
   note: {
     fontSize: 20,
